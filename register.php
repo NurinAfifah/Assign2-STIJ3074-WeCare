@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $password1 = $_POST['password1']; // Ensure this line exists
+    $password1 = $_POST['password1'];
     $phoneno = $_POST['phone'];
     $address = $_POST['address'];
 
@@ -62,6 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         margin: 0;
         font-family: Arial, sans-serif;
         color: black;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
     }
 
     .container {
@@ -70,11 +73,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        flex: 1;
     }
 
     .form-container {
-        width: 50%;
-        max-width: 100%;
+        width: 100%;
+        max-width: 600px;
         margin: 30px auto;
         padding: 20px;
         border: 1px solid #ddd;
@@ -136,11 +140,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     .footer {
-        margin: auto;
         padding: 10px;
         background-color: #0056b3;
         text-align: center;
-        color: black;
+        color: white;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
     }
 
     header {
@@ -209,7 +215,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <footer class="footer">
-        <div class="container">
+        <div class="container mt-0">
             © 2024 WeCare Clinic. All rights reserved.
         </div>
     </footer>
@@ -232,16 +238,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     });
 
     document.getElementById("registerForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent the default form submission behavior
-
+        event.preventDefault();
+        // Prevent the default form submission behavior
         // Submit the form data via AJAX
         var formData = new FormData(this);
-
         fetch("register.php", {
                 method: "POST",
                 body: formData
-            })
-            .then(response => {
+            }).then(response => {
                 if (response.ok) {
                     window.location.href = "patients.php";
                 } else {
