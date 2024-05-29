@@ -15,13 +15,13 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         die("Connection failed: " . $e->getMessage());
     }
 
-    $name = $_POST['name'];
+    $username = $_POST['username'];
     $password = $_POST['password'];
 
     // Using prepared statements for security
-    $sqllogin = "SELECT * FROM `users` WHERE `name` = :name";
+    $sqllogin = "SELECT * FROM `users` WHERE `name` = :username";
     $stmt = $conn->prepare($sqllogin);
-    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':username', $username);
     $stmt->execute();
 
     // Check if the user exists
@@ -29,8 +29,8 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // Verify the password
-        if (password_verify($password, $users['password'])) {
-            $_SESSION["name"] = $name;
+        if (password_verify($password, $user['password'])) {
+            $_SESSION["name"] = $username;
             echo "<script>alert('Login Success');</script>";
             echo "<script>window.location.href = 'register.php';</script>";
         } else {
@@ -61,7 +61,19 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100vh;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .form-container {
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        max-width: 500px;
+        width: 100%;
+        margin: 20px auto;
     }
 
     input[type="text"],
@@ -73,7 +85,6 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         border-radius: 5px;
         font-size: 16px;
         box-sizing: border-box;
-        display: block;
     }
 
     .password-container {
@@ -95,28 +106,17 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         align-items: center;
     }
 
-    .sign-up {
-        font-size: 16px;
-        font-weight: bold;
-        color: #007bff;
-        cursor: pointer;
-    }
-
-    .sign-up:hover {
-        text-decoration: underline;
-    }
-
     .login-btn {
         font-size: 1em;
         background-color: #0056b3;
         border-color: #0056b3;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         color: #fff;
         border: none;
         padding: 10px 20px;
-        border-radius: 20px;
+        border-radius: 5px;
         cursor: pointer;
         text-align: center;
+        width: 100%;
     }
 
     .login-btn:hover {
@@ -128,14 +128,6 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         font-family: 'Arial Black', sans-serif;
         margin-bottom: 20px;
         text-align: center;
-    }
-
-    .container-content {
-        border-radius: 3px;
-        margin-top: 40px;
-        margin-bottom: 15px;
-        border: 3px solid black;
-        padding: 15px;
     }
 
     .carousel-inner img {
@@ -152,10 +144,27 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     }
 
     @media (max-width: 768px) {
+        body {
+            padding: 10px;
+        }
 
-        .carousel,
+        h1 {
+            font-size: 2em;
+        }
+
         .form-container {
-            margin-bottom: 20px;
+            padding: 15px;
+        }
+
+        .login-btn {
+            padding: 10px 15px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
         }
     }
     </style>
@@ -164,7 +173,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-6 image-container" style="margin: auto;">
+            <div class="col-lg-6 col-md-12">
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
                         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -192,7 +201,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                     </a>
                 </div>
             </div>
-            <div class="col-md-6 form-container" style="margin: auto;">
+            <div class="col-lg-6 col-md-12 form-container">
                 <h1>WeCare Clinic</h1>
                 <form id="loginForm" action="login.php" method="POST">
                     <input type="text" name="username" placeholder="Username" required autocomplete="username">
