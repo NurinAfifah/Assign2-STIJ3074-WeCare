@@ -12,23 +12,30 @@
         margin: 0;
         font-family: Arial, sans-serif;
         color: black;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
     }
 
     .container {
         margin: 30px auto;
         max-width: 90%;
+        flex: 1;
     }
 
     .table-container {
         margin-top: 30px;
+        overflow-x: auto;
     }
 
     .footer {
-        margin: auto;
         padding: 10px;
         background-color: #0056b3;
         text-align: center;
-        color: black;
+        color: white;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
     }
 
     header {
@@ -64,7 +71,7 @@
                         <a class="nav-link" href="patients.php">Patients</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Logout</a>
+                        <a class="nav-link" href="login.php">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -74,7 +81,7 @@
     <div class="container">
         <div class="table-container">
             <h1 class="mb-4">Registered Patients</h1>
-            <table class="table table-bordered">
+            <table class="table table-bordered table-responsive-md">
                 <thead class="thead-dark">
                     <tr>
                         <th>ID</th>
