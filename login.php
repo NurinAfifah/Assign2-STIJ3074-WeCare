@@ -27,7 +27,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         if (password_verify($password, $user['password'])) {
             $_SESSION["name"] = $username;
             echo "<script>alert('Login Success');</script>";
-            echo "<script>window.location.href = 'register.php';</script>";
+            echo "<script>window.location.href = 'index.php';</script>";
         } else {
             echo "<script>alert('Login Failed: Incorrect password');</script>";
             echo "<script>window.location.href = 'login.php';</script>";
@@ -116,6 +116,18 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 
     .login-btn:hover {
         background-color: #004085;
+    }
+
+    .register-link {
+        font-size: 0.9em;
+        color: #0056b3;
+        text-decoration: underline;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    .register-link:hover {
+        color: #004085;
     }
 
     h1 {
@@ -207,6 +219,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                     </div>
                     <div class="centered">
                         <button type="submit" class="login-btn">Login</button>
+                        <a href="register.php" class="register-link">Register</a> <!-- Add this line -->
                     </div>
                 </form>
             </div>
