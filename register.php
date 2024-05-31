@@ -4,16 +4,13 @@ $username = "root";
 $password = "";
 $dbname = "wecare";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get form inputs
     $name = $_POST['name'];
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -21,27 +18,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phoneno = $_POST['phone'];
     $address = $_POST['address'];
 
-    // Check if passwords match
     if ($password !== $password1) {
         echo "Passwords do not match.";
         exit;
     }
-
-    // Hash the password
+    
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-    // Prepare and bind
     $stmt = $conn->prepare("INSERT INTO users (name, email, password, phoneno, address) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $name, $email, $hashed_password, $phoneno, $address);
 
-    // Execute the statement
     if ($stmt->execute()) {
         echo "New record created successfully";
     } else {
         echo "Error: " . $stmt->error;
     }
 
-    // Close the statement and connection
     $stmt->close();
     $conn->close();
 }
@@ -80,6 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         width: 100%;
         max-width: 600px;
         margin: 30px auto;
+        margin-bottom: 70px;
         padding: 20px;
         border: 1px solid #ddd;
         border-radius: 10px;
@@ -179,17 +171,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <a class="nav-link" href="#">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="patients.php">Patients</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Logout</a>
+                        <a class="nav-link" href="login.php">Logout</a>
                     </li>
                 </ul>
             </div>
         </nav>
     </header>
 
-    <div class="container">
+    <div class=" container">
         <div class="form-container">
             <form id="registerForm" action="register.php" method="POST">
                 <h1 class="mb-4">Register New Patient</h1>
@@ -221,7 +210,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </footer>
 
     <script>
-    // Toggle password visibility for the first password field
     document.getElementById("togglePassword").addEventListener("click", function() {
         var passwordField = document.getElementById("password");
         var type = passwordField.getAttribute("type") === "password" ? "text" : "password";
@@ -229,7 +217,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         this.classList.toggle("fa-eye-slash");
     });
 
-    // Toggle password visibility for the second password field
     document.getElementById("togglePassword1").addEventListener("click", function() {
         var passwordField1 = document.getElementById("password1");
         var type1 = passwordField1.getAttribute("type") === "password" ? "text" : "password";
@@ -239,15 +226,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     document.getElementById("registerForm").addEventListener("submit", function(event) {
         event.preventDefault();
-        // Prevent the default form submission behavior
-        // Submit the form data via AJAX
         var formData = new FormData(this);
         fetch("register.php", {
                 method: "POST",
                 body: formData
             }).then(response => {
                 if (response.ok) {
-                    window.location.href = "patients.php";
+                    document.getElementById("registerForm").reset();
+                    alert("Registration successful!");
                 } else {
                     throw new Error("Error occurred while registering.");
                 }
