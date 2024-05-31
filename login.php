@@ -7,7 +7,6 @@ $dbpassword = "";
 $dbname = "wecare";
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
-    // Establish connection to the database
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -18,17 +17,13 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Using prepared statements for security
     $sqllogin = "SELECT * FROM `users` WHERE `name` = :username";
     $stmt = $conn->prepare($sqllogin);
     $stmt->bindParam(':username', $username);
     $stmt->execute();
 
-    // Check if the user exists
     if ($stmt->rowCount() > 0) {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Verify the password
         if (password_verify($password, $user['password'])) {
             $_SESSION["name"] = $username;
             echo "<script>alert('Login Success');</script>";
